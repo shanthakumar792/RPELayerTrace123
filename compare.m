@@ -1,0 +1,30 @@
+clc;
+close all;
+clear all;
+addr1 = 'C:\Users\shanthakumar\Documents\MATLAB\pcia\Result_test\';
+addr2 = 'C:\Users\shanthakumar\Documents\MATLAB\pcia\traced_test_final\';
+folder1 = dir(addr1);
+for i = 3:length(folder1)
+    img_path = folder1(i).name;
+    full_img_path1 = strcat(addr1,img_path);
+    full_img_path2 = strcat(addr2,img_path);
+    img1 = imread(full_img_path1);
+    img2 = imread(full_img_path2);
+    [h1,w1] = size(img1);
+    segIm = img1;
+    grndTruth = imresize(img2,[h1,w1]);
+    img = grndTruth;
+    anew = segIm;
+    anew1=cat(3,anew);
+anew1=cat(3,anew1,anew);
+anew1=cat(3,anew1,anew);
+anew1(:,:,2)=0;
+anew1(:,:,3)=0;
+x = img;
+x2=cat(3,x);
+x2=cat(3,x2,x);
+x2=cat(3,x2,x);
+C = imfuse(x2,anew1,'blend','Scaling','joint');
+%figure;
+imshow(C);
+end

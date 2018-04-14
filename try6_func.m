@@ -1,0 +1,30 @@
+function P = try6_func(K)
+level = graythresh(K);
+BW = im2bw(K,(level*1.3));
+figure;
+imshow(BW);
+CC= bwconncomp(BW);
+[h1,w1] = size(BW);
+BW1 = zeros(h1,w1);
+numPixels = cellfun(@numel,CC.PixelIdxList);
+[biggest,idx] = max(numPixels);
+BW1(CC.PixelIdxList{idx}) = 1;
+figure;
+imshow(BW1);
+se = strel('disk',1);
+BW1 = imopen(BW1,se);
+BW1 = imclose(BW1,se);
+figure;
+imshow(BW1);
+BW1(:,w1)=0;
+BW2 = imcomplement(BW1);
+CC1 = bwconncomp(BW2);
+BW3 = zeros(h1,w1);
+numPixels = cellfun(@numel,CC1.PixelIdxList);
+[biggest,idx] = max(numPixels);
+BW3(CC1.PixelIdxList{idx}) = 1;
+BW3 = imcomplement(BW3);
+figure;
+imshow(BW3);
+P = BW3;
+end
